@@ -1,5 +1,7 @@
 %{
 	#include<stdio.h>
+	#include "y.tab.h"
+	#include<string.h>
 	char githubLink[1000];
 	char yytextCopy[1000];
 	char indexFile[1000];
@@ -11,6 +13,7 @@ delim [ \t\n]
 %%
 type:node{delim}	{
 				//return node_id from y.tab.h
+				return NODE_TYPE;
 			}
 githubUrl:\".*\"{delim}	{
 				//set yylval to the githublink and return the git token
@@ -21,6 +24,8 @@ githubUrl:\".*\"{delim}	{
 					j++;
 				}
 				githubLink[++j]='\0';
+				strcpy(yylval.githubUrl,githubLink);
+				return REPO_LINK;
 				//return token_git_link
 			}
 
@@ -33,6 +38,8 @@ indexFile:\".*\"{delim}	{
 				}
 				indexFile[++j] = '\0';
 				//return indexFile Token
+				strcpy(yylval.indexFile,indexFile);
+				return INDEX_FILE;
 			}
 
 port:[0-9]+		{
@@ -45,13 +52,12 @@ port:[0-9]+		{
 				portString[++j]='\0';
 				port=atoi(portString);
 				//set yylval to port and return port token
+				yylval.port = port;
+				return PORT;
 			}
 
 %%
 int yywrap(){
 	return 1;
 }
-int main(){
-	yylex();
-	printf("\n Lexer Called");
-}
+

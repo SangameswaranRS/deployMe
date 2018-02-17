@@ -496,13 +496,15 @@ char *yytext;
 #line 1 "deployMe.l"
 #line 2 "deployMe.l"
 	#include<stdio.h>
+	#include "y.tab.h"
+	#include<string.h>
 	char githubLink[1000];
 	char yytextCopy[1000];
 	char indexFile[1000];
 	char portString[100];
 	int i,j,k,port;
 	void yyerror(char *);
-#line 506 "lex.yy.c"
+#line 508 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -720,9 +722,9 @@ YY_DECL
 		}
 
 	{
-#line 11 "deployMe.l"
+#line 13 "deployMe.l"
 
-#line 726 "lex.yy.c"
+#line 728 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -782,15 +784,16 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 12 "deployMe.l"
+#line 14 "deployMe.l"
 {
 				//return node_id from y.tab.h
+				return NODE_TYPE;
 			}
 	YY_BREAK
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 15 "deployMe.l"
+#line 18 "deployMe.l"
 {
 				//set yylval to the githublink and return the git token
 				strcpy(yytextCopy,yytext);
@@ -800,13 +803,15 @@ YY_RULE_SETUP
 					j++;
 				}
 				githubLink[++j]='\0';
+				strcpy(yylval.githubUrl,githubLink);
+				return REPO_LINK;
 				//return token_git_link
 			}
 	YY_BREAK
 case 3:
 /* rule 3 can match eol */
 YY_RULE_SETUP
-#line 27 "deployMe.l"
+#line 32 "deployMe.l"
 {
 				strcpy(yytextCopy,yytext);
 				for(i=0;yytextCopy[i]!='"';i++);
@@ -816,15 +821,16 @@ YY_RULE_SETUP
 				}
 				indexFile[++j] = '\0';
 				//return indexFile Token
+				strcpy(yylval.indexFile,indexFile);
+				return INDEX_FILE;
 			}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 38 "deployMe.l"
+#line 45 "deployMe.l"
 {
 				strcpy(yytextCopy,yytext);
 				for(i=0;yytextCopy[i]!=':';i++);
-				printf("i=%d",i);
 				for(j=0,k=i+1;yytextCopy[k]!='\0';k++){
 					portString[j]=yytextCopy[k];
 					j++;
@@ -832,14 +838,16 @@ YY_RULE_SETUP
 				portString[++j]='\0';
 				port=atoi(portString);
 				//set yylval to port and return port token
+				yylval.port = port;
+				return PORT;
 			}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 51 "deployMe.l"
+#line 59 "deployMe.l"
 ECHO;
 	YY_BREAK
-#line 843 "lex.yy.c"
+#line 851 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1840,14 +1848,11 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 51 "deployMe.l"
+#line 59 "deployMe.l"
 
 
 int yywrap(){
 	return 1;
 }
-int main(){
-	yylex();
-	printf("\n Lexer Called");
-}
+
 
