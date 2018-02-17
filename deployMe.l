@@ -38,7 +38,6 @@ indexFile:\".*\"{delim}	{
 port:[0-9]+		{
 				strcpy(yytextCopy,yytext);
 				for(i=0;yytextCopy[i]!=':';i++);
-				printf("i=%d",i);
 				for(j=0,k=i+1;yytextCopy[k]!='\0';k++){
 					portString[j]=yytextCopy[k];
 					j++;
