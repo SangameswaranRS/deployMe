@@ -15,8 +15,10 @@
 %start deploy
 %%
 
-deploy :  NODE_TYPE REPO_LINK INDEX_FILE PORT {printf("Fuck Yeah");}
-
+deploy :  NODE_TYPE REPO_LINK INDEX_FILE PORT 	{
+							printf("Repo Link = %s indexFile = %s port = %d",$2.githubUrl,$3.indexFile,$4.port);
+						}
+	;
 %%
 
 #include"lex.yy.c"

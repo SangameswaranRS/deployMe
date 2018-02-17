@@ -158,7 +158,7 @@ typedef struct {
 } YYSTACKDATA;
 /* variables for the parser stack */
 static YYSTACKDATA yystack;
-#line 21 "deployMe.y"
+#line 23 "deployMe.y"
 
 #include"lex.yy.c"
 
@@ -374,9 +374,11 @@ yyreduce:
     {
 case 1:
 #line 18 "deployMe.y"
-	{printf("Fuck Yeah");}
+	{
+							printf("Repo Link = %s indexFile = %s port = %d",yystack.l_mark[-2].githubUrl,yystack.l_mark[-1].indexFile,yystack.l_mark[0].port);
+						}
 break;
-#line 380 "y.tab.c"
+#line 382 "y.tab.c"
     }
     yystack.s_mark -= yym;
     yystate = *yystack.s_mark;
