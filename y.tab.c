@@ -19,9 +19,13 @@
 
 #line 2 "deployMe.y"
 	#include<stdlib.h>
+	#include<fcntl.h>
+	#include<unistd.h>
+	int fileDescriptor;
+	char totalCommands[100000];
 	void yyerror(char *);
 	int yylex(void);
-#line 10 "deployMe.y"
+#line 14 "deployMe.y"
 #ifdef YYSTYPE
 #undef  YYSTYPE_IS_DECLARED
 #define YYSTYPE_IS_DECLARED 1
@@ -34,7 +38,7 @@ typedef union{
 	int port;
 } YYSTYPE;
 #endif /* !YYSTYPE_IS_DECLARED */
-#line 38 "y.tab.c"
+#line 42 "y.tab.c"
 
 /* compatibility with bison */
 #ifdef YYPARSE_PARAM
@@ -158,7 +162,7 @@ typedef struct {
 } YYSTACKDATA;
 /* variables for the parser stack */
 static YYSTACKDATA yystack;
-#line 23 "deployMe.y"
+#line 41 "deployMe.y"
 
 #include"lex.yy.c"
 
@@ -170,7 +174,7 @@ int main(){
 	yyparse();
 	return 0;
 }
-#line 174 "y.tab.c"
+#line 178 "y.tab.c"
 
 #if YYDEBUG
 #include <stdio.h>		/* needed for printf */
@@ -373,12 +377,26 @@ yyreduce:
     switch (yyn)
     {
 case 1:
-#line 18 "deployMe.y"
+#line 22 "deployMe.y"
 	{
-							printf("Repo Link = %s indexFile = %s port = %d",yystack.l_mark[-2].githubUrl,yystack.l_mark[-1].indexFile,yystack.l_mark[0].port);
+							printf("Deploying node server with \nRepo Link = %s \nindexFile = %s \nport = %d",yystack.l_mark[-2].githubUrl,yystack.l_mark[-1].indexFile,yystack.l_mark[0].port);
+							fileDescriptor = open("deployMe_nodeType.sh",O_RDWR|O_CREAT|O_APPEND);
+							if(fileDescriptor == -1){
+								printf("\n Error opening Script \n");
+							}else{
+								strcat(totalCommands,"git clone ");
+								strcat(totalCommands,yystack.l_mark[-2].githubUrl);
+								strcat(totalCommands,"\n");
+								strcat(totalCommands,"node ");
+								strcat(totalCommands,yystack.l_mark[-1].indexFile);
+								strcat(totalCommands,"\n");
+								printf("%s",totalCommands);
+								write(fileDescriptor,totalCommands,sizeof(totalCommands));
+								/*invoke Exec System Call				*/
+							}
 						}
 break;
-#line 382 "y.tab.c"
+#line 400 "y.tab.c"
     }
     yystack.s_mark -= yym;
     yystate = *yystack.s_mark;

@@ -1,5 +1,9 @@
 %{
 	#include<stdlib.h>
+	#include<fcntl.h>
+	#include<unistd.h>
+	int fileDescriptor;
+	char totalCommands[100000];
 	void yyerror(char *);
 	int yylex(void);
 %}
@@ -16,7 +20,21 @@
 %%
 
 deploy :  NODE_TYPE REPO_LINK INDEX_FILE PORT 	{
-							printf("Repo Link = %s indexFile = %s port = %d",$2.githubUrl,$3.indexFile,$4.port);
+							printf("Deploying node server with \nRepo Link = %s \nindexFile = %s \nport = %d",$2.githubUrl,$3.indexFile,$4.port);
+							fileDescriptor = open("deployMe_nodeType.sh",O_RDWR|O_CREAT|O_APPEND);
+							if(fileDescriptor == -1){
+								printf("\n Error opening Script \n");
+							}else{
+								strcat(totalCommands,"git clone ");
+								strcat(totalCommands,$2.githubUrl);
+								strcat(totalCommands,"\n");
+								strcat(totalCommands,"node ");
+								strcat(totalCommands,$3.indexFile);
+								strcat(totalCommands,"\n");
+								printf("%s",totalCommands);
+								write(fileDescriptor,totalCommands,sizeof(totalCommands));
+								//invoke Exec System Call				
+							}
 						}
 	;
 %%

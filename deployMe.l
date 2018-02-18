@@ -56,6 +56,11 @@ port:[0-9]+		{
 				return PORT;
 			}
 
+.			{
+	
+				yyerror("Invalid Character");
+			}
+
 %%
 int yywrap(){
 	return 1;
