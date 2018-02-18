@@ -25,7 +25,7 @@
 	char totalCommands[100000];
 	void yyerror(char *);
 	int yylex(void);
-#line 14 "deployMe.y"
+#line 15 "deployMe.y"
 #ifdef YYSTYPE
 #undef  YYSTYPE_IS_DECLARED
 #define YYSTYPE_IS_DECLARED 1
@@ -33,12 +33,13 @@
 #ifndef YYSTYPE_IS_DECLARED
 #define YYSTYPE_IS_DECLARED 1
 typedef union{
+	char repoName[1000];
 	char githubUrl[1000];
 	char indexFile[1000];
 	int port;
 } YYSTYPE;
 #endif /* !YYSTYPE_IS_DECLARED */
-#line 42 "y.tab.c"
+#line 43 "y.tab.c"
 
 /* compatibility with bison */
 #ifdef YYPARSE_PARAM
@@ -74,41 +75,42 @@ extern int YYPARSE_DECL();
 #define NODE_TYPE 257
 #define REPO_LINK 258
 #define INDEX_FILE 259
-#define PORT 260
+#define REPO_NAME 260
+#define PORT 261
 #define YYERRCODE 256
 typedef short YYINT;
 static const YYINT yylhs[] = {                           -1,
     0,
 };
 static const YYINT yylen[] = {                            2,
-    4,
+    5,
 };
 static const YYINT yydefred[] = {                         0,
-    0,    0,    0,    0,    1,
+    0,    0,    0,    0,    0,    1,
 };
 static const YYINT yydgoto[] = {                          2,
 };
 static const YYINT yysindex[] = {                      -257,
- -256,    0, -258, -255,    0,
+ -256,    0, -258, -255, -253,    0,
 };
 static const YYINT yyrindex[] = {                         0,
-    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,
 };
 static const YYINT yygindex[] = {                         0,
 };
-#define YYTABLESIZE 5
+#define YYTABLESIZE 7
 static const YYINT yytable[] = {                          1,
-    4,    3,    0,    0,    5,
+    4,    3,    0,    0,    0,    5,    6,
 };
 static const YYINT yycheck[] = {                        257,
-  259,  258,   -1,   -1,  260,
+  259,  258,   -1,   -1,   -1,  261,  260,
 };
 #define YYFINAL 2
 #ifndef YYDEBUG
 #define YYDEBUG 0
 #endif
-#define YYMAXTOKEN 260
-#define YYUNDFTOKEN 263
+#define YYMAXTOKEN 261
+#define YYUNDFTOKEN 264
 #define YYTRANSLATE(a) ((a) > YYMAXTOKEN ? YYUNDFTOKEN : (a))
 #if YYDEBUG
 static const char *const yyname[] = {
@@ -120,11 +122,11 @@ static const char *const yyname[] = {
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"NODE_TYPE","REPO_LINK",
-"INDEX_FILE","PORT",0,0,"illegal-symbol",
+"INDEX_FILE","REPO_NAME","PORT",0,0,"illegal-symbol",
 };
 static const char *const yyrule[] = {
 "$accept : deploy",
-"deploy : NODE_TYPE REPO_LINK INDEX_FILE PORT",
+"deploy : NODE_TYPE REPO_LINK INDEX_FILE PORT REPO_NAME",
 
 };
 #endif
@@ -162,7 +164,7 @@ typedef struct {
 } YYSTACKDATA;
 /* variables for the parser stack */
 static YYSTACKDATA yystack;
-#line 41 "deployMe.y"
+#line 45 "deployMe.y"
 
 #include"lex.yy.c"
 
@@ -174,7 +176,7 @@ int main(){
 	yyparse();
 	return 0;
 }
-#line 178 "y.tab.c"
+#line 180 "y.tab.c"
 
 #if YYDEBUG
 #include <stdio.h>		/* needed for printf */
@@ -377,26 +379,28 @@ yyreduce:
     switch (yyn)
     {
 case 1:
-#line 22 "deployMe.y"
+#line 24 "deployMe.y"
 	{
-							printf("Deploying node server with \nRepo Link = %s \nindexFile = %s \nport = %d",yystack.l_mark[-2].githubUrl,yystack.l_mark[-1].indexFile,yystack.l_mark[0].port);
-							fileDescriptor = open("deployMe_nodeType.sh",O_RDWR|O_CREAT|O_APPEND);
-							if(fileDescriptor == -1){
-								printf("\n Error opening Script \n");
-							}else{
-								strcat(totalCommands,"git clone ");
-								strcat(totalCommands,yystack.l_mark[-2].githubUrl);
-								strcat(totalCommands,"\n");
-								strcat(totalCommands,"node ");
-								strcat(totalCommands,yystack.l_mark[-1].indexFile);
-								strcat(totalCommands,"\n");
-								printf("%s",totalCommands);
-								write(fileDescriptor,totalCommands,sizeof(totalCommands));
-								/*invoke Exec System Call				*/
-							}
-						}
+									printf("Deploying node server with \nRepo Link = %s \nindexFile = %s \nport = %d",yystack.l_mark[-3].githubUrl,yystack.l_mark[-2].indexFile,yystack.l_mark[-1].port);
+									fileDescriptor = open("deployMe_nodeType.sh",O_RDWR|O_CREAT|O_APPEND);
+									if(fileDescriptor == -1){
+										printf("\n Error opening Script \n");
+									}else{
+										strcat(totalCommands,"git clone ");
+										strcat(totalCommands,yystack.l_mark[-3].githubUrl);
+										strcat(totalCommands,"\n");
+										strcat(totalCommands,"cd ");
+										strcat(totalCommands,yystack.l_mark[0].repoName);
+										strcat(totalCommands,"\n");
+										strcat(totalCommands,"node ");
+										strcat(totalCommands,yystack.l_mark[-2].indexFile);
+										strcat(totalCommands,"\n");
+										write(fileDescriptor,totalCommands,sizeof(totalCommands));
+										/*invoke Exec System Call				*/
+									}
+								}
 break;
-#line 400 "y.tab.c"
+#line 404 "y.tab.c"
     }
     yystack.s_mark -= yym;
     yystate = *yystack.s_mark;

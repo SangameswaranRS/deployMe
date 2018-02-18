@@ -1,0 +1,6 @@
+type:node
+githubUrl:"https://www.github.com/SangameswaranRS/voldemort.git"
+indexFile:"voldemort.js"
+port:5959
+repoName:"voldemort"
+

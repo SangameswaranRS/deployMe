@@ -6,6 +6,7 @@
 	char yytextCopy[1000];
 	char indexFile[1000];
 	char portString[100];
+	char repoName[100];
 	int i,j,k,port;
 	void yyerror(char *);
 %}
@@ -42,7 +43,7 @@ indexFile:\".*\"{delim}	{
 				return INDEX_FILE;
 			}
 
-port:[0-9]+		{
+port:[0-9]+{delim}	{
 				strcpy(yytextCopy,yytext);
 				for(i=0;yytextCopy[i]!=':';i++);
 				for(j=0,k=i+1;yytextCopy[k]!='\0';k++){
@@ -54,6 +55,19 @@ port:[0-9]+		{
 				//set yylval to port and return port token
 				yylval.port = port;
 				return PORT;
+			}
+
+repoName:\".*\"[ \n]	{
+				strcpy(yytextCopy,yytext);
+				for(i=0;yytextCopy[i]!='"';i++);
+				for(j=0,k=i+1;yytextCopy[k]!='"';k++){
+					repoName[j]=yytextCopy[k];
+					j++;	
+				}
+				repoName[++j]='\0';
+				strcpy(yylval.repoName,repoName);
+				//set yylval to repoName and return token REPO_NAME
+				return REPO_NAME;	
 			}
 
 .			{
