@@ -27,7 +27,7 @@ githubUrl:\".*\"{delim}	{
 				githubLink[++j]='\0';
 				strcpy(yylval.githubUrl,githubLink);
 				return REPO_LINK;
-				//return token_git_link
+				//return token repo_link
 			}
 
 indexFile:\".*\"{delim}	{
@@ -68,6 +68,11 @@ repoName:\".*\"[ \n]	{
 				strcpy(yylval.repoName,repoName);
 				//set yylval to repoName and return token REPO_NAME
 				return REPO_NAME;	
+			}
+
+type:html_basic{delim}	{
+				//return HTML_BASIC token from y.tab.h
+				return HTML_BASIC;
 			}
 
 .			{

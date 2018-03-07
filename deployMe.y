@@ -12,6 +12,7 @@
 %token INDEX_FILE
 %token REPO_NAME
 %token PORT
+%token HTML_BASIC
 %union{
 	char repoName[1000];
 	char githubUrl[1000];
@@ -39,6 +40,21 @@ deploy :  NODE_TYPE REPO_LINK INDEX_FILE PORT REPO_NAME		{
 										write(fileDescriptor,totalCommands,sizeof(totalCommands));
 										//invoke Exec System Call				
 									}
+								}
+	| HTML_BASIC REPO_LINK INDEX_FILE REPO_NAME		{
+									printf("\n Deploying HTML basic webpage with \n Repo Link=%s\n indexFile=%s \n Repository Name= %s\n",$2.githubUrl,$3.indexFile,$4.repoName);
+									fileDescriptor=open("deployMe_htmlBasic.sh",O_RDWR|O_CREAT|O_APPEND);
+									if(fileDescriptor == -1){
+										printf("\n Error opening Script\n");
+									}else{
+										//request Sudo access
+										strcat(totalCommands,"\ncd usr/share/nginx/html\n");
+										strcat(totalCommands,"git clone ");
+										strcat(totalCommands,$2.githubUrl);
+										write(fileDescriptor,totalCommands,sizeof(totalCommands));
+										//invoke exec system call
+									}
+									
 								}
 	;
 %%

@@ -3,6 +3,7 @@
 #define INDEX_FILE 259
 #define REPO_NAME 260
 #define PORT 261
+#define HTML_BASIC 262
 #ifdef YYSTYPE
 #undef  YYSTYPE_IS_DECLARED
 #define YYSTYPE_IS_DECLARED 1
