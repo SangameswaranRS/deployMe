@@ -25,7 +25,8 @@
 	char totalCommands[100000];
 	void yyerror(char *);
 	int yylex(void);
-#line 16 "deployMe.y"
+	char baseServerUrl[1000];
+#line 17 "deployMe.y"
 #ifdef YYSTYPE
 #undef  YYSTYPE_IS_DECLARED
 #define YYSTYPE_IS_DECLARED 1
@@ -39,7 +40,7 @@ typedef union{
 	int port;
 } YYSTYPE;
 #endif /* !YYSTYPE_IS_DECLARED */
-#line 43 "y.tab.c"
+#line 44 "y.tab.c"
 
 /* compatibility with bison */
 #ifdef YYPARSE_PARAM
@@ -166,7 +167,7 @@ typedef struct {
 } YYSTACKDATA;
 /* variables for the parser stack */
 static YYSTACKDATA yystack;
-#line 61 "deployMe.y"
+#line 64 "deployMe.y"
 
 #include"lex.yy.c"
 
@@ -175,10 +176,11 @@ void yyerror(char *s){
 }
 
 int main(){
+	strcpy(baseServerUrl,"http://localhost");
 	yyparse();
 	return 0;
 }
-#line 182 "y.tab.c"
+#line 184 "y.tab.c"
 
 #if YYDEBUG
 #include <stdio.h>		/* needed for printf */
@@ -381,7 +383,7 @@ yyreduce:
     switch (yyn)
     {
 case 1:
-#line 25 "deployMe.y"
+#line 26 "deployMe.y"
 	{
 									printf("Deploying node server with \nRepo Link = %s \nindexFile = %s \nport = %d",yystack.l_mark[-3].githubUrl,yystack.l_mark[-2].indexFile,yystack.l_mark[-1].port);
 									fileDescriptor = open("deployMe_nodeType.sh",O_RDWR|O_CREAT|O_APPEND);
@@ -398,12 +400,13 @@ case 1:
 										strcat(totalCommands,yystack.l_mark[-2].indexFile);
 										strcat(totalCommands,"\n");
 										write(fileDescriptor,totalCommands,sizeof(totalCommands));
+										printf("\nAccess Your Node server via %s:%d/<YourApiRoutes>",baseServerUrl,yystack.l_mark[-1].port);
 										/*invoke Exec System Call				*/
 									}
 								}
 break;
 case 2:
-#line 44 "deployMe.y"
+#line 46 "deployMe.y"
 	{
 									printf("\n Deploying HTML basic webpage with \n Repo Link=%s\n indexFile=%s \n Repository Name= %s\n",yystack.l_mark[-2].githubUrl,yystack.l_mark[-1].indexFile,yystack.l_mark[0].repoName);
 									fileDescriptor=open("deployMe_htmlBasic.sh",O_RDWR|O_CREAT|O_APPEND);
@@ -415,12 +418,13 @@ case 2:
 										strcat(totalCommands,"git clone ");
 										strcat(totalCommands,yystack.l_mark[-2].githubUrl);
 										write(fileDescriptor,totalCommands,sizeof(totalCommands));
+										printf("\n Access your website via %s:80/%s/%s",baseServerUrl,yystack.l_mark[0].repoName,yystack.l_mark[-1].indexFile);
 										/*invoke exec system call*/
 									}
 									
 								}
 break;
-#line 424 "y.tab.c"
+#line 428 "y.tab.c"
     }
     yystack.s_mark -= yym;
     yystate = *yystack.s_mark;

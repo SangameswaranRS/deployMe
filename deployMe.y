@@ -6,6 +6,7 @@
 	char totalCommands[100000];
 	void yyerror(char *);
 	int yylex(void);
+	char baseServerUrl[1000];
 %}
 %token NODE_TYPE
 %token REPO_LINK
@@ -38,6 +39,7 @@ deploy :  NODE_TYPE REPO_LINK INDEX_FILE PORT REPO_NAME		{
 										strcat(totalCommands,$3.indexFile);
 										strcat(totalCommands,"\n");
 										write(fileDescriptor,totalCommands,sizeof(totalCommands));
+										printf("\nAccess Your Node server via %s:%d/<YourApiRoutes>",baseServerUrl,$4.port);
 										//invoke Exec System Call				
 									}
 								}
@@ -52,6 +54,7 @@ deploy :  NODE_TYPE REPO_LINK INDEX_FILE PORT REPO_NAME		{
 										strcat(totalCommands,"git clone ");
 										strcat(totalCommands,$2.githubUrl);
 										write(fileDescriptor,totalCommands,sizeof(totalCommands));
+										printf("\n Access your website via %s:80/%s/%s",baseServerUrl,$4.repoName,$3.indexFile);
 										//invoke exec system call
 									}
 									
@@ -66,6 +69,7 @@ void yyerror(char *s){
 }
 
 int main(){
+	strcpy(baseServerUrl,"http://localhost");
 	yyparse();
 	return 0;
 }
