@@ -26,7 +26,7 @@
 	void yyerror(char *);
 	int yylex(void);
 	char baseServerUrl[1000];
-#line 17 "deployMe.y"
+#line 18 "deployMe.y"
 #ifdef YYSTYPE
 #undef  YYSTYPE_IS_DECLARED
 #define YYSTYPE_IS_DECLARED 1
@@ -79,40 +79,46 @@ extern int YYPARSE_DECL();
 #define REPO_NAME 260
 #define PORT 261
 #define HTML_BASIC 262
+#define ANGULAR 263
 #define YYERRCODE 256
 typedef short YYINT;
 static const YYINT yylhs[] = {                           -1,
-    0,    0,
+    0,    0,    0,
 };
 static const YYINT yylen[] = {                            2,
-    5,    4,
+    5,    4,    5,
 };
 static const YYINT yydefred[] = {                         0,
-    0,    0,    0,    0,    0,    0,    0,    0,    2,    1,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    2,    0,    1,    3,
 };
-static const YYINT yydgoto[] = {                          3,
+static const YYINT yydgoto[] = {                          4,
 };
 static const YYINT yysindex[] = {                      -257,
- -256, -255,    0, -258, -253, -254, -252, -251,    0,    0,
+ -256, -255, -254,    0, -258, -252, -251, -250, -248, -247,
+ -245,    0, -244,    0,    0,
 };
 static const YYINT yyrindex[] = {                         0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,
 };
 static const YYINT yygindex[] = {                         0,
 };
-#define YYTABLESIZE 9
+#define YYTABLESIZE 16
 static const YYINT yytable[] = {                          1,
-    6,    4,    5,    0,    2,    7,    8,    9,   10,
+    8,    5,    6,    7,    2,    3,    9,   10,    0,    0,
+   11,   12,    0,   13,   14,   15,
 };
 static const YYINT yycheck[] = {                        257,
-  259,  258,  258,   -1,  262,  259,  261,  260,  260,
+  259,  258,  258,  258,  262,  263,  259,  259,   -1,   -1,
+  261,  260,   -1,  261,  260,  260,
 };
-#define YYFINAL 3
+#define YYFINAL 4
 #ifndef YYDEBUG
 #define YYDEBUG 0
 #endif
-#define YYMAXTOKEN 262
-#define YYUNDFTOKEN 265
+#define YYMAXTOKEN 263
+#define YYUNDFTOKEN 266
 #define YYTRANSLATE(a) ((a) > YYMAXTOKEN ? YYUNDFTOKEN : (a))
 #if YYDEBUG
 static const char *const yyname[] = {
@@ -124,12 +130,13 @@ static const char *const yyname[] = {
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"NODE_TYPE","REPO_LINK",
-"INDEX_FILE","REPO_NAME","PORT","HTML_BASIC",0,0,"illegal-symbol",
+"INDEX_FILE","REPO_NAME","PORT","HTML_BASIC","ANGULAR",0,0,"illegal-symbol",
 };
 static const char *const yyrule[] = {
 "$accept : deploy",
 "deploy : NODE_TYPE REPO_LINK INDEX_FILE PORT REPO_NAME",
 "deploy : HTML_BASIC REPO_LINK INDEX_FILE REPO_NAME",
+"deploy : ANGULAR REPO_LINK INDEX_FILE PORT REPO_NAME",
 
 };
 #endif
@@ -167,7 +174,7 @@ typedef struct {
 } YYSTACKDATA;
 /* variables for the parser stack */
 static YYSTACKDATA yystack;
-#line 64 "deployMe.y"
+#line 86 "deployMe.y"
 
 #include"lex.yy.c"
 
@@ -180,7 +187,7 @@ int main(){
 	yyparse();
 	return 0;
 }
-#line 184 "y.tab.c"
+#line 191 "y.tab.c"
 
 #if YYDEBUG
 #include <stdio.h>		/* needed for printf */
@@ -383,10 +390,10 @@ yyreduce:
     switch (yyn)
     {
 case 1:
-#line 26 "deployMe.y"
+#line 27 "deployMe.y"
 	{
 									printf("Deploying node server with \nRepo Link = %s \nindexFile = %s \nport = %d",yystack.l_mark[-3].githubUrl,yystack.l_mark[-2].indexFile,yystack.l_mark[-1].port);
-									fileDescriptor = open("deployMe_nodeType.sh",O_RDWR|O_CREAT|O_APPEND);
+									fileDescriptor = open("runMe.sh",O_RDWR|O_CREAT|O_TRUNC);
 									if(fileDescriptor == -1){
 										printf("\n Error opening Script \n");
 									}else{
@@ -406,10 +413,10 @@ case 1:
 								}
 break;
 case 2:
-#line 46 "deployMe.y"
+#line 47 "deployMe.y"
 	{
 									printf("\n Deploying HTML basic webpage with \n Repo Link=%s\n indexFile=%s \n Repository Name= %s\n",yystack.l_mark[-2].githubUrl,yystack.l_mark[-1].indexFile,yystack.l_mark[0].repoName);
-									fileDescriptor=open("deployMe_htmlBasic.sh",O_RDWR|O_CREAT|O_APPEND);
+									fileDescriptor=open("runMe.sh",O_RDWR|O_CREAT|O_TRUNC);
 									if(fileDescriptor == -1){
 										printf("\n Error opening Script\n");
 									}else{
@@ -424,7 +431,31 @@ case 2:
 									
 								}
 break;
-#line 428 "y.tab.c"
+case 3:
+#line 63 "deployMe.y"
+	{
+									printf("\n Deploying Angular Project with \n Repo Link =%s\n Index File= %s\n Repository Name=%s\n Port=%d\n",yystack.l_mark[-3].githubUrl,yystack.l_mark[-2].indexFile,yystack.l_mark[0].repoName,yystack.l_mark[-1].port);
+									 fileDescriptor = open("runMe.sh",O_RDWR|O_CREAT|O_TRUNC);
+                                                                        if(fileDescriptor == -1){
+                                                                                printf("\n Error opening Script \n");
+                                                                        }else{
+                                                                                strcat(totalCommands,"git clone ");
+                                                                                strcat(totalCommands,yystack.l_mark[-3].githubUrl);
+                                                                                strcat(totalCommands,"\n");
+                                                                                strcat(totalCommands,"cd ");
+                                                                                strcat(totalCommands,yystack.l_mark[0].repoName);
+                                                                                strcat(totalCommands,"\n");
+                                                                                strcat(totalCommands,"node ");
+                                                                                strcat(totalCommands,yystack.l_mark[-2].indexFile);
+                                                                                strcat(totalCommands,"\n");
+                                                                                write(fileDescriptor,totalCommands,sizeof(totalCommands));
+                                                                                printf("\n Access Your angular project via %s:%d/<YourRoutes>\n",baseServerUrl,yystack.l_mark[-1].port);
+                                                                                /*invoke Exec System Call*/
+                                                                        }	
+
+								}
+break;
+#line 459 "y.tab.c"
     }
     yystack.s_mark -= yym;
     yystate = *yystack.s_mark;

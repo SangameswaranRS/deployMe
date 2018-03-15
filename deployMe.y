@@ -14,6 +14,7 @@
 %token REPO_NAME
 %token PORT
 %token HTML_BASIC
+%token ANGULAR
 %union{
 	char repoName[1000];
 	char githubUrl[1000];
@@ -25,7 +26,7 @@
 
 deploy :  NODE_TYPE REPO_LINK INDEX_FILE PORT REPO_NAME		{
 									printf("Deploying node server with \nRepo Link = %s \nindexFile = %s \nport = %d",$2.githubUrl,$3.indexFile,$4.port);
-									fileDescriptor = open("deployMe_nodeType.sh",O_RDWR|O_CREAT|O_APPEND);
+									fileDescriptor = open("runMe.sh",O_RDWR|O_CREAT|O_TRUNC);
 									if(fileDescriptor == -1){
 										printf("\n Error opening Script \n");
 									}else{
@@ -45,7 +46,7 @@ deploy :  NODE_TYPE REPO_LINK INDEX_FILE PORT REPO_NAME		{
 								}
 	| HTML_BASIC REPO_LINK INDEX_FILE REPO_NAME		{
 									printf("\n Deploying HTML basic webpage with \n Repo Link=%s\n indexFile=%s \n Repository Name= %s\n",$2.githubUrl,$3.indexFile,$4.repoName);
-									fileDescriptor=open("deployMe_htmlBasic.sh",O_RDWR|O_CREAT|O_APPEND);
+									fileDescriptor=open("runMe.sh",O_RDWR|O_CREAT|O_TRUNC);
 									if(fileDescriptor == -1){
 										printf("\n Error opening Script\n");
 									}else{
@@ -58,6 +59,27 @@ deploy :  NODE_TYPE REPO_LINK INDEX_FILE PORT REPO_NAME		{
 										//invoke exec system call
 									}
 									
+								}
+	|ANGULAR REPO_LINK INDEX_FILE PORT REPO_NAME			{
+									printf("\n Deploying Angular Project with \n Repo Link =%s\n Index File= %s\n Repository Name=%s\n Port=%d\n",$2.githubUrl,$3.indexFile,$5.repoName,$4.port);
+									 fileDescriptor = open("runMe.sh",O_RDWR|O_CREAT|O_TRUNC);
+                                                                        if(fileDescriptor == -1){
+                                                                                printf("\n Error opening Script \n");
+                                                                        }else{
+                                                                                strcat(totalCommands,"git clone ");
+                                                                                strcat(totalCommands,$2.githubUrl);
+                                                                                strcat(totalCommands,"\n");
+                                                                                strcat(totalCommands,"cd ");
+                                                                                strcat(totalCommands,$5.repoName);
+                                                                                strcat(totalCommands,"\n");
+                                                                                strcat(totalCommands,"node ");
+                                                                                strcat(totalCommands,$3.indexFile);
+                                                                                strcat(totalCommands,"\n");
+                                                                                write(fileDescriptor,totalCommands,sizeof(totalCommands));
+                                                                                printf("\n Access Your angular project via %s:%d/<YourRoutes>\n",baseServerUrl,$4.port);
+                                                                                //invoke Exec System Call
+                                                                        }	
+
 								}
 	;
 %%

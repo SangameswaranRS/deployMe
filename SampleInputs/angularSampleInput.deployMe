@@ -1,0 +1,6 @@
+type:angular
+githubUrl:"https://www.github.com"
+indexFile:"index.js"
+port:5959
+repoName:"angularTest"
+

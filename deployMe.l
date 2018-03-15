@@ -75,6 +75,11 @@ type:html_basic{delim}	{
 				return HTML_BASIC;
 			}
 
+type:angular{delim}	{
+				//Return Angular Token from y.tab.h
+				return ANGULAR;
+			}
+
 .			{
 	
 				yyerror("Invalid Character");
