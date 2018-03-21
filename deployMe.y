@@ -41,7 +41,10 @@ deploy :  NODE_TYPE REPO_LINK INDEX_FILE PORT REPO_NAME		{
 										strcat(totalCommands,"\n");
 										write(fileDescriptor,totalCommands,sizeof(totalCommands));
 										printf("\nAccess Your Node server via %s:%d/<YourApiRoutes>",baseServerUrl,$4.port);
-										//invoke Exec System Call				
+										//invoke Exec System Call
+										char *args[]={"./runMe.sh",NULL};
+        									execvp(args[0],args);
+										printf("\n Script Runtime Error.");				
 									}
 								}
 	| HTML_BASIC REPO_LINK INDEX_FILE REPO_NAME		{
@@ -57,6 +60,9 @@ deploy :  NODE_TYPE REPO_LINK INDEX_FILE PORT REPO_NAME		{
 										write(fileDescriptor,totalCommands,sizeof(totalCommands));
 										printf("\n Access your website via %s:80/%s/%s",baseServerUrl,$4.repoName,$3.indexFile);
 										//invoke exec system call
+										char *args[]={"./runMe.sh",NULL};
+                                                                                execvp(args[0],args);
+                                                                                printf("\n Script Runtime error..");
 									}
 									
 								}
@@ -78,6 +84,9 @@ deploy :  NODE_TYPE REPO_LINK INDEX_FILE PORT REPO_NAME		{
                                                                                 write(fileDescriptor,totalCommands,sizeof(totalCommands));
                                                                                 printf("\n Access Your angular project via %s:%d/<YourRoutes>\n",baseServerUrl,$4.port);
                                                                                 //invoke Exec System Call
+										char *args[]={"./runMe.sh",NULL};
+                                                                                execvp(args[0],args);
+                                                                                printf("\n Script runtime error..");
                                                                         }	
 
 								}

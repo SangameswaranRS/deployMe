@@ -174,7 +174,7 @@ typedef struct {
 } YYSTACKDATA;
 /* variables for the parser stack */
 static YYSTACKDATA yystack;
-#line 86 "deployMe.y"
+#line 95 "deployMe.y"
 
 #include"lex.yy.c"
 
@@ -408,12 +408,15 @@ case 1:
 										strcat(totalCommands,"\n");
 										write(fileDescriptor,totalCommands,sizeof(totalCommands));
 										printf("\nAccess Your Node server via %s:%d/<YourApiRoutes>",baseServerUrl,yystack.l_mark[-1].port);
-										/*invoke Exec System Call				*/
+										/*invoke Exec System Call*/
+										char *args[]={"./runMe.sh",NULL};
+        									execvp(args[0],args);
+										printf("\n Script Runtime Error.");				
 									}
 								}
 break;
 case 2:
-#line 47 "deployMe.y"
+#line 50 "deployMe.y"
 	{
 									printf("\n Deploying HTML basic webpage with \n Repo Link=%s\n indexFile=%s \n Repository Name= %s\n",yystack.l_mark[-2].githubUrl,yystack.l_mark[-1].indexFile,yystack.l_mark[0].repoName);
 									fileDescriptor=open("runMe.sh",O_RDWR|O_CREAT|O_TRUNC);
@@ -427,12 +430,15 @@ case 2:
 										write(fileDescriptor,totalCommands,sizeof(totalCommands));
 										printf("\n Access your website via %s:80/%s/%s",baseServerUrl,yystack.l_mark[0].repoName,yystack.l_mark[-1].indexFile);
 										/*invoke exec system call*/
+										char *args[]={"./runMe.sh",NULL};
+                                                                                execvp(args[0],args);
+                                                                                printf("\n Script Runtime error..");
 									}
 									
 								}
 break;
 case 3:
-#line 63 "deployMe.y"
+#line 69 "deployMe.y"
 	{
 									printf("\n Deploying Angular Project with \n Repo Link =%s\n Index File= %s\n Repository Name=%s\n Port=%d\n",yystack.l_mark[-3].githubUrl,yystack.l_mark[-2].indexFile,yystack.l_mark[0].repoName,yystack.l_mark[-1].port);
 									 fileDescriptor = open("runMe.sh",O_RDWR|O_CREAT|O_TRUNC);
@@ -451,11 +457,14 @@ case 3:
                                                                                 write(fileDescriptor,totalCommands,sizeof(totalCommands));
                                                                                 printf("\n Access Your angular project via %s:%d/<YourRoutes>\n",baseServerUrl,yystack.l_mark[-1].port);
                                                                                 /*invoke Exec System Call*/
+										char *args[]={"./runMe.sh",NULL};
+                                                                                execvp(args[0],args);
+                                                                                printf("\n Script runtime error..");
                                                                         }	
 
 								}
 break;
-#line 459 "y.tab.c"
+#line 468 "y.tab.c"
     }
     yystack.s_mark -= yym;
     yystate = *yystack.s_mark;
