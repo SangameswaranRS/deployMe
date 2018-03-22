@@ -410,8 +410,8 @@ case 1:
 										printf("\nAccess Your Node server via %s:%d/<YourApiRoutes>",baseServerUrl,yystack.l_mark[-1].port);
 										/*invoke Exec System Call*/
 										char *args[]={"./runMe.sh",NULL};
-        									execvp(args[0],args);
-										printf("\n Script Runtime Error.");				
+        									/*execvp(args[0],args);*/
+										/*printf("\n Script Runtime Error.");				*/
 									}
 								}
 break;
@@ -424,15 +424,15 @@ case 2:
 										printf("\n Error opening Script\n");
 									}else{
 										/*request Sudo access*/
-										strcat(totalCommands,"\ncd usr/share/nginx/html\n");
+										strcat(totalCommands,"\ncd ../../../../../xampp/htdocs/\n");
 										strcat(totalCommands,"git clone ");
 										strcat(totalCommands,yystack.l_mark[-2].githubUrl);
 										write(fileDescriptor,totalCommands,sizeof(totalCommands));
 										printf("\n Access your website via %s:80/%s/%s",baseServerUrl,yystack.l_mark[0].repoName,yystack.l_mark[-1].indexFile);
 										/*invoke exec system call*/
 										char *args[]={"./runMe.sh",NULL};
-                                                                                execvp(args[0],args);
-                                                                                printf("\n Script Runtime error..");
+                                                                                /*execvp(args[0],args);*/
+                                                                                /*printf("\n Script Runtime error..");*/
 									}
 									
 								}
@@ -458,8 +458,8 @@ case 3:
                                                                                 printf("\n Access Your angular project via %s:%d/<YourRoutes>\n",baseServerUrl,yystack.l_mark[-1].port);
                                                                                 /*invoke Exec System Call*/
 										char *args[]={"./runMe.sh",NULL};
-                                                                                execvp(args[0],args);
-                                                                                printf("\n Script runtime error..");
+                                                                                /*execvp(args[0],args);*/
+                                                                                /*printf("\n Script runtime error..");*/
                                                                         }	
 
 								}
